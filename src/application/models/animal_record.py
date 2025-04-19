@@ -12,7 +12,7 @@ class Animals(Enum):
         try:
             return cls[animal_type].value
         except KeyError:
-            return None
+            return 0
 
 class AnimalRecord(BaseModel):
     petId: str

@@ -13,12 +13,12 @@ formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(messag
 
 repsository_blueprint = Blueprint("repsository_blueprint", __name__, url_prefix="/pet-repository")
 
-@repsository_blueprint.route("/<animal_type>", methods=["GET"])
-def get_pets(animal_type: str) -> Response:
-    animalId: int = Animals.check_animal_exist(animal_type.upper())
-    if animalId is None: 
+@repsository_blueprint.route("/", methods=["GET"])
+def get_pets() -> Response:
+    animal_type = request.args.get("animal_type", default=None)
+    animalId: int = Animals.check_animal_exist(animal_type.upper()) if animal_type is not None else None
+    if animalId == 0: 
         response: PetsResponse = PetsResponse(
-            requested_animal_type=animal_type.upper(),
             status="error",
             timestamp=datetime.now(),
             pets=[],
@@ -26,7 +26,10 @@ def get_pets(animal_type: str) -> Response:
         )
         return jsonify(response.model_dump()), 500
     try: 
-        result: list[dict] = db.find_data({"animalId": animalId}, limit=request.args.get("limit", 1))
+        if animalId is None:
+            result: list[dict] = db.find_data({}, limit=request.args.get("limit", 1))
+        else:
+            result: list[dict] = db.find_data({"animalId": animalId}, limit=request.args.get("limit", 1))
         if result:
             pets: list[AnimalRecord] = []
             for record in result: 
@@ -38,10 +41,9 @@ def get_pets(animal_type: str) -> Response:
                     height=record["height"],
                     created_at=record["created_at"],
                     url=record["url"],
-                    animal_type=animal_type.upper()
+                    animal_type=record["animal_type"],
                 ))
             response: PetsResponse = PetsResponse(
-                requested_animal_type=animal_type.upper(),
                 timestamp=datetime.now(),
                 status="success",
                 pet_count=len(pets),
@@ -51,7 +53,6 @@ def get_pets(animal_type: str) -> Response:
             return jsonify(response.model_dump()), 200
         else:
             response: PetsResponse = PetsResponse(
-                requested_animal_type=animal_type.upper(),
                 status="error",
                 timestamp=datetime.now(),
                 pets=[],
@@ -61,7 +62,6 @@ def get_pets(animal_type: str) -> Response:
     except Exception as e:
         logger.error(f"The following error occured when processing the request: {e}")
         response: PetsResponse = PetsResponse(
-            requested_animal_type=animal_type.upper(),
             status="error",
             timestamp=datetime.now(),
             pets=[],
