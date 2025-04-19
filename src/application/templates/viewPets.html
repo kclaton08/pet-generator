@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Pets</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 20px;
+            background-color: rgb(255, 255, 255);
+        }
+        th, td {
+            border: 1px solid #ffffff;
+            padding: 15px;
+
+        }
+        th {
+            background-color: green;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <table stlye="border: 1px solid black; width: 50%; text-align: left;">
+        <tr>
+            <th colspan="4">Your Pets</th>
+        <tr>
+            <th>Pet Name</th>
+            <th>Pet Type</th>
+            <th>Adoption Date</th>
+            <th>Image</th>
+        </tr>
+        {% for pet in data %}
+        <tr>
+            <td>{{ pet.name }}</td>
+            <td>{{ pet.animal_type }}</td>
+            <td>{{ pet.created_at }}</td>
+            <td><img src="{{ pet.url }}" alt="Pet Image" style="width:200px;height:200px;"></td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    {% if data|length == 0 %}
+        <h2>No Pets Found</h2>
+    {% endif %}
+    <br><br>
+    <button onclick="window.location.href='/pet-generator'">Generate another pet</button>
+    
+</body>
+</html>

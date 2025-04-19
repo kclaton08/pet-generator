@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pet Generator</title>
+</head>
+<body>
+    <h1 style="color: green">Pet Generator</h1>
+    {% if data.show_image %}
+        <h2>Meet {{ data.name }}!</h2>
+        <p>Type: {{ data.animal_type }}</p>
+        <p>Name: {{ data.name }}</p> 
+        <p>Adoption date {{ data.created_at }}</p>
+        <img src="{{ data.url }}" alt="Look how exited they are!" style="width:200px;height:200px;">
+        <br><br>
+        <button onclick="window.location.href='/pet-generator'">Generate another pet</button>
+    {% else %}
+        <h2>Generate a Pet!</h2>
+        <form action="/pet-generator/generate" method="post">
+            <label for="pet_name">Enter Pet Name:</label>
+            <input type="text" id="pet_name" name="pet_name" required>
+            <br><br>
+            <label for="animal_type">Select Pet Type:</label>
+            <select name="animal_type" id="animal_type">
+                <option value="dog">Dog</option>
+                <option value="cat">Cat</option>
+            </select>
+            <button type="submit">Generate Pet</button>
+            <br><br>
+            <h2>View all your pets</h2>
+            <button onclick="window.location.href='/pet-generator/view'">View Pets</button>
+        </form>
+    {% endif %}
+</body>
+</html>
