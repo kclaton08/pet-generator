@@ -6,14 +6,19 @@
 <h2>How to run appliction</h2>
 <p>
     1. Clone repository locally and run "pip install -r requirements.txt" when you are in the root directory of pet-generator. This will install all of the application dependencies"
-
+</p>
+<p>
     2. Reach out to repo owner to receive db username and password to update .env with necessary connection string dependencies.
-
-    3. Generate API key for the cat/dog image generation endpoint via the https://thecatapi.com/. Once this is generated, updated .env with a key DOG_CAT_API_KEY=<your generated API key>.
-
+</p>
+<p>
+    3. Generate API key for the cat/dog image generation endpoint via the https://thecatapi.com/. Once this is generated, updated .env with a key DOG_CAT_API_KEY=YOUR GENERATED API KEY.
+</p>
+<p>
     4. Navigate to app.py within pet-generator/src/appication/app.py and run in a dedicated terminal. This will start the application on localhost:8000 or the port of your choice. To go to the application, navigate to http://localhost:8000/pet-generator. This will bring you to the frontend where you can start generating your collection of pets! 
-
+</p>
+<p>
     5. To containerize the application, you can run "docker build -t my_app:1.0.0 ." while you have a docker engine running on your local computer. This will buid the application utilizing a linux image.
+
 </p>
 
 <h2>Using the REST API endpoint</h2>
